@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perguntas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4b79a1;
+            --secondary-color: #283e51;
+            --background-color: linear-gradient(135deg, #4b79a1, #283e51);
+            --text-color: #333;
+            --white-color: #fff;
+            --shadow-color: rgba(0, 0, 0, 0.2);
+            --back-button-color: #ff4b2b;
+            --back-button-hover-color: #ff6b3a;
+            --message-background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: var(--background-color);
+            color: var(--text-color);
+            transition: background 0.3s;
+        }
+
+        #container {
+            background: var(--white-color);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px var(--shadow-color);
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+            opacity: 0;
+            animation: fadeIn 1s forwards;
+            transition: transform 0.3s;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        h1 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+
+        #content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        button {
+            padding: 15px 25px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 25px;
+            background: var(--primary-color);
+            color: var(--white-color);
+            transition: background 0.3s, transform 0.3s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        button i {
+            font-size: 18px;
+        }
+
+        button:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        #message {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--white-color);
+            padding: 20px;
+            background: var(--message-background-color);
+            border-radius: 15px;
+            margin: 20px;
+            animation: bounceIn 1s;
+            position: relative;
+        }
+
+        @keyframes bounceIn {
+            0% {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+            60% {
+                transform: scale(1.1);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            font-size: 14px;
+            cursor: pointer;
+            border: none;
+            border-radius: 25px;
+            background: var(--back-button-color);
+            color: var(--white-color);
+            display: none;
+            transition: background 0.3s, transform 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .back-button i {
+            font-size: 18px;
+        }
+
+        .back-button:hover {
+            background: var(--back-button-hover-color);
+            transform: translateY(-2px);
+        }
+
+        footer {
+            position: absolute;
+            bottom: 10px;
+            text-align: center;
+            width: 100%;
+            font-size: 14px;
+            color: var(--white-color);
+            background: var(--message-background-color);
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        .created-by {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            font-size: 14px;
+            color: var(--white-color);
+            animation: fadeInText 2s infinite;
+        }
+
+        @keyframes fadeInText {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <button class="back-button" id="backButton" onclick="goToStart()"><i class="fas fa-arrow-left"></i> Voltar ao Início</button>
+    <div id="container">
+        <h1 id="title">QUER PARTICIPAR DE UM QUIZ GRATUITO?</h1>
+        <div id="content">
+            <button onclick="startQuiz()"><i class="fas fa-play"></i> Sim</button>
+        </div>
+    </div>
+    <footer>
+        <p>Quiz grátis para amigos!</p>
+    </footer>
+    <script>
+        const questions = [
+            {
+                question: 'Quantos anos você tem?',
+                answers: ['15', '10', '99', '1'],
+                correctAnswer: '15'
+            },
+            {
+                question: 'Quando você faz aniversário?',
+                answers: ['32/05', '01/04', '99/00', '08/06'],
+                correctAnswer: '08/06'
+            },
+            {
+                question: 'Você nasceu às 12:32 da noite?',
+                answers: ['Sim', 'Não'],
+                correctAnswer: 'Sim'
+            },
+            {
+                question: 'Seu nome é Maria Gabriella?',
+                answers: ['Sim', 'Não'],
+                correctAnswer: 'Sim'
+            }
+        ];
+
+        const content = document.getElementById('content');
+        const title = document.getElementById('title');
+        const backButton = document.getElementById('backButton');
+        const friendName = 'Maria';  // Substitua pelo nome da sua amiga
+        let currentQuestionIndex = 0;
+
+        function startQuiz() {
+            currentQuestionIndex = 0;
+            loadQuestions();
+        }
+
+        function loadQuestions() {
+            const questionData = questions[currentQuestionIndex];
+            content.innerHTML = '';
+            title.textContent = questionData.question;
+            backButton.style.display = 'none'; // Esconde o botão de voltar inicialmente
+
+            const list = document.createElement('ul');
+            list.style.listStyleType = 'none';
+            list.style.padding = 0;
+            list.style.textAlign = 'center'; /* Centraliza o texto */
+
+            questionData.answers.forEach(answer => {
+                const listItem = document.createElement('li');
+                listItem.style.marginBottom = '10px'; /* Espaçamento entre os itens */
+                const button = document.createElement('button');
+                button.textContent = answer;
+                button.onclick = () => handleAnswerClick(answer, questionData.correctAnswer);
+                button.setAttribute('aria-label', `Answer: ${answer}`);
+                listItem.appendChild(button);
+                list.appendChild(listItem);
+            });
+
+            content.appendChild(list);
+        }
+
+        function handleAnswerClick(answer, correctAnswer) {
+            if (answer === correctAnswer) {
+                if (currentQuestionIndex < questions.length - 1) {
+                    if (currentQuestionIndex === 1 && answer === '08/06') {
+                        currentQuestionIndex = 2; // Vai para a pergunta "Você nasceu às 12:32 da noite?"
+                    } else if (currentQuestionIndex === 2 && answer === 'Sim') {
+                        currentQuestionIndex = 3; // Vai para a pergunta "Seu nome é Maria Gabriella?"
+                    } else {
+                        currentQuestionIndex++;
+                    }
+                    loadQuestions();
+                } else {
+                    showMessage(`Feliz Aniversário, ${friendName}!`);
+                }
+            } else {
+                showLieMessage();
+            }
+        }
+
+        function showMessage(message) {
+            document.body.innerHTML = `<div id="message">${message}<div class="created-by">CRIADO PELO DN</div></div><footer><p>Quiz grátis para amigos!</p></footer>`;
+        }
+
+        function showLieMessage() {
+            const container = document.getElementById('container');
+            container.innerHTML = '<div id="message" style="background: black; color: white;">É MENTIRA</div>';
+            backButton.style.display = 'block'; // Mostra o botão de voltar
+        }
+
+        function goToStart() {
+            location.reload(); // Recarrega a página
+        }
+    </script>
+</body>
+</html>
